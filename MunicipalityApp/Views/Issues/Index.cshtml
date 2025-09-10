@@ -1,0 +1,132 @@
+﻿@model IEnumerable<MunicipalityApp.Models.Issue>
+@{
+    ViewData["Title"] = "Reported Issues";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reported Issues - Municipal Services</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <style>
+        :root {
+            --nsw-blue: #003882;
+            --nsw-light-blue: #005696;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-image: url('../Images/SmallerTown.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .btn-primary {
+            background-color: var(--nsw-blue);
+            color: white;
+        }
+
+            .btn-primary:hover {
+                background-color: var(--nsw-light-blue);
+            }
+
+        .btn-warning {
+            background-color: #f59e0b;
+            color: white;
+        }
+
+            .btn-warning:hover {
+                background-color: #d97706;
+            }
+    </style>
+    <script>
+        function openModal(id) {
+            document.getElementById('modal-' + id).classList.remove('hidden');
+        }
+        function closeModal(id) {
+            document.getElementById('modal-' + id).classList.add('hidden');
+        }
+    </script>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <header class="bg-[#003882] text-white p-4 shadow-md w-full">
+        <div class="container mx-auto max-w-lg flex items-center">
+            <h1 class="text-2xl font-bold">South African Municipal Services</h1>
+        </div>
+    </header>
+
+    <div class="flex-grow flex justify-center p-4">
+        <div class="container max-w-4xl w-full p-6 bg-white/75 rounded-xl shadow-lg backdrop-blur-sm">
+            <h2 class="text-3xl font-bold mb-6 text-center">Reported Issues</h2>
+
+            @if (TempData["Success"] != null)
+            {
+                <div class="mb-4 text-green-800 bg-green-200 p-3 rounded">@TempData["Success"]</div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="mb-4 text-red-800 bg-red-200 p-3 rounded">@TempData["Error"]</div>
+            }
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                @foreach (var issue in Model)
+                {
+                    <div class="bg-gray-100 p-4 rounded shadow cursor-pointer hover:bg-gray-200"
+                         onclick="openModal('@issue.Id')">
+                        <h3 class="font-semibold">@issue.Category - @issue.Location</h3>
+                        <p class="text-sm text-gray-600">@issue.SubmittedAt.ToString("dd MMM yyyy HH:mm")</p>
+                        <p class="text-gray-700 truncate">@issue.Description</p>
+                        @if (!string.IsNullOrEmpty(issue.FilePath))
+                        {
+                            <img src="@issue.FilePath" alt="Attachment" class="mt-2 h-24 w-full object-cover rounded">
+                        }
+                    </div>
+
+                    <div id="modal-@issue.Id" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+                        <div class="bg-white rounded-xl w-11/12 md:w-2/3 lg:w-1/2 p-6 relative overflow-y-auto max-h-[90vh]">
+                            <button class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 font-bold"
+                                    onclick="closeModal('@issue.Id')">
+                                &times;
+                            </button>
+
+                            <h3 class="text-2xl font-bold mb-4">@issue.Category - @issue.Location</h3>
+
+                            <p><strong>Reference Number:</strong> @issue.ReferenceNumber</p>
+                            <p><strong>Status:</strong> @issue.Status</p>
+                            <p><strong>Submitted At:</strong> @issue.SubmittedAt.ToString("dd MMM yyyy HH:mm")</p>
+                            <p class="mt-2"><strong>Description:</strong> @issue.Description</p>
+
+                            @if (!string.IsNullOrEmpty(issue.Response))
+                            {
+                                <p class="mt-2 text-green-700"><strong>Municipal Response:</strong> @issue.Response</p>
+                            }
+
+                            @if (!string.IsNullOrEmpty(issue.FilePath))
+                            {
+                                <div class="mt-4">
+                                    <strong>Attachment:</strong>
+                                    <img src="@issue.FilePath" alt="Attachment" class="w-full object-cover rounded mt-2">
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="mt-6 text-center">
+                <a href="/Home/Index" class="btn-primary px-6 py-2 rounded font-semibold">Back to Main Menu</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+
+

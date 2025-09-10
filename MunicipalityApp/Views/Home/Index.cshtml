@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Municipal Services</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <style>
+        :root {
+            --nsw-blue: #003882;
+            --nsw-light-blue: #005696;
+            --nsw-grey: #f0f0f0;
+            --nsw-text-color: #333;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--nsw-text-color);
+            background-image: url('/Images/SmallerTown.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .btn-primary {
+            background-color: var(--nsw-blue);
+            color: white;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+            .btn-primary:hover {
+                background-color: var(--nsw-light-blue);
+            }
+
+        .btn-info {
+            background-color: var(--nsw-light-blue);
+            color: white;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+            .btn-info:hover {
+                background-color: var(--nsw-blue);
+            }
+
+        .btn-secondary {
+            background-color: #ccc;
+            color: #666;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <header class="bg-[#003882] text-white p-4 shadow-md w-full">
+        <div class="container mx-auto max-w-lg flex items-center">
+            <h1 class="text-2xl font-bold">South African Municipal Services</h1>
+        </div>
+    </header>
+
+    <div class="flex-grow flex items-center justify-center p-4">
+        <div class="container text-center max-w-lg mx-auto p-8 bg-white/75 rounded-xl shadow-lg backdrop-blur-sm">
+            <h1 class="text-4xl font-bold mb-8">Municipal Services</h1>
+
+            <div class="flex flex-col space-y-4">
+                <a class="btn-primary w-full py-4 px-6 rounded-md font-semibold text-lg hover:no-underline transition duration-300" href="/Issues/Report">Report Issues</a>
+                <a class="btn-info w-full py-4 px-6 rounded-md font-semibold text-lg hover:no-underline transition duration-300" href="/Issues/Index">View Reported Issues</a>
+                <button class="btn-secondary w-full py-4 px-6 rounded-md font-semibold text-lg" disabled>Local Events (Coming Soon)</button>
+                <button class="btn-secondary w-full py-4 px-6 rounded-md font-semibold text-lg" disabled>Service Request Status (Coming Soon)</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+

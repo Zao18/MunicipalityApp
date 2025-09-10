@@ -1,0 +1,139 @@
+﻿@model MunicipalityApp.Models.Issue
+@{
+    ViewData["Title"] = "Report Issue";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Issue - Municipal Services</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <style>
+        :root {
+            --nsw-blue: #003882;
+            --nsw-light-blue: #005696;
+            --nsw-text-color: #333;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--nsw-text-color);
+            background-image: url('../Images/SmallerTown.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .btn-primary {
+            background-color: var(--nsw-blue);
+            color: white;
+        }
+
+            .btn-primary:hover {
+                background-color: var(--nsw-light-blue);
+            }
+
+        .btn-secondary {
+            background-color: #ccc;
+            color: #666;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <header class="bg-[#003882] text-white p-4 shadow-md w-full">
+        <div class="container mx-auto max-w-lg flex items-center">
+            <h1 class="text-2xl font-bold">South African Municipal Services</h1>
+        </div>
+    </header>
+
+    <div class="flex-grow flex items-center justify-center p-4">
+        <div class="container max-w-lg w-full p-8 bg-white/75 rounded-xl shadow-lg backdrop-blur-sm">
+            <h2 class="text-3xl font-bold mb-6 text-center">Report an Issue</h2>
+
+            @if (TempData["Reference"] != null)
+            {
+                <div class="mb-4 text-blue-800 bg-blue-200 p-3 rounded">
+                    ✅ Your issue has been logged successfully.<br />
+                    Reference Number: <strong>@TempData["Reference"]</strong>
+                </div>
+            }
+
+            @if (TempData["Success"] != null)
+            {
+                <div class="mb-4 text-green-800 bg-green-200 p-3 rounded">@TempData["Success"]</div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="mb-4 text-red-800 bg-red-200 p-3 rounded">@TempData["Error"]</div>
+            }
+
+            @Html.ValidationSummary(true, "", new { @class = "text-red-600 mb-4" })
+
+            <form asp-action="Report" method="post" enctype="multipart/form-data" class="space-y-4">
+                @Html.AntiForgeryToken()
+
+                <div>
+                    <label asp-for="Location" class="block font-semibold mb-1"></label>
+                    <input asp-for="Location" class="w-full p-2 border border-gray-300 rounded" />
+                    <span asp-validation-for="Location" class="text-red-600"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Category" class="block font-semibold mb-1"></label>
+                    <select asp-for="Category" class="w-full p-2 border border-gray-300 rounded">
+                        <option value="">-- Select Category --</option>
+                        <option value="Sanitation">Sanitation</option>
+                        <option value="Roads">Roads</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Water Supply">Water Supply</option>
+                        <option value="Electricity / Power">Electricity / Power</option>
+                        <option value="Street Lighting">Street Lighting</option>
+                        <option value="Traffic Signals">Traffic Signals</option>
+                        <option value="Potholes">Potholes</option>
+                        <option value="Sidewalks / Footpaths">Sidewalks / Footpaths</option>
+                        <option value="Public Transport">Public Transport</option>
+                        <option value="Waste Collection">Waste Collection</option>
+                        <option value="Illegal Dumping">Illegal Dumping</option>
+                        <option value="Graffiti / Vandalism">Graffiti / Vandalism</option>
+                        <option value="Parks / Recreation Areas">Parks / Recreation Areas</option>
+                        <option value="Noise Complaint">Noise Complaint</option>
+                        <option value="Animal Control">Animal Control</option>
+                        <option value="Flooding / Drainage">Flooding / Drainage</option>
+                        <option value="Public Safety / Crime">Public Safety / Crime</option>
+                        <option value="Building / Construction Issues">Building / Construction Issues</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <span asp-validation-for="Category" class="text-red-600"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Description" class="block font-semibold mb-1"></label>
+                    <textarea asp-for="Description" class="w-full p-2 border border-gray-300 rounded" rows="5"></textarea>
+                </div>
+
+                <div>
+                    <label class="block font-semibold mb-1">Attach File</label>
+                    <input type="file" name="file" class="w-full p-2 border border-gray-300 rounded" />
+                </div>
+
+                <div class="flex justify-between mt-4">
+                    <button type="submit" class="btn-primary px-6 py-2 rounded font-semibold">Submit</button>
+                    <a asp-controller="Home" asp-action="Index" class="btn-secondary px-6 py-2 rounded font-semibold">Back</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+
+
+
+
+
