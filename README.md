@@ -1,58 +1,97 @@
-# MunicipalityApp
+🏛 Municipality App: Local Events & Citizen Engagement
 
-This project is a simple C# ASP.NET Core application that allows citizens to report municipal issues and track them in a queue-like system. The application demonstrates how issues are stored, managed, and retrieved using a custom linked list queue implementation.
+🌟 Project Summary
 
----
+The Municipality App is an ASP.NET Core MVC (C#) application focused on efficient citizen engagement and local information access.
 
-## Prerequisites
+The core of the project is a high-performance system for managing local events and announcements. It achieves superior speed and responsiveness by leveraging advanced C# data structures for all search, sorting, and personalization features.
 
-Before running the application, make sure you have:
+✨ Core Features
 
-- [.NET 6.0 SDK or later](https://dotnet.microsoft.com/en-us/download) installed
-- A code editor such as [Visual Studio](https://visualstudio.microsoft.com/) or [Visual Studio Code](https://code.visualstudio.com/)
+Events List: Displays all local events with robust search, filtering, and sorting options.
 
----
+Personalized Recommendations: Uses a Content-Based Algorithm to suggest events based on tracked user interest.
 
-## How to Compile
+Recently Viewed: Tracks the last events a user viewed for quick access (implemented with a Stack).
 
-1. Clone or download the repository to your local machine.
-   ```bash
-   git clone https://github.com/yourusername/MunicipalityApp.git
-Navigate into the project folder:
+Issue Reporting: Placeholder feature for citizens to report municipal issues.
 
-bash
-Copy code
-cd MunicipalityApp
-Restore dependencies:
+🛠 Technical Implementation & Data Structures
 
-bash
-Copy code
-dotnet restore
-Build the project:
+This project is built around specialized C# generic collections for optimal performance:
 
-bash
-Copy code
-dotnet build
+Feature/Task
 
-How to Run
+Data Structure Used
 
-To start the application:
+Purpose & Benefit
 
-dotnet run
+Primary Event Storage
+
+SortedDictionary<DateTime, List<Event>>
+
+Maintains events in automatic chronological order for efficient retrieval.
+
+Filtering & Lookup
+
+HashSet<string> (Categories)
+
+Provides O(1) lookup for unique category lists, ensuring fast filter population.
+
+Last Viewed History
+
+Stack<Event>
+
+Implements Last-In, First-Out (LIFO) behavior for accurate history tracking.
+
+Recommendation Engine
+
+Dictionary<string, int> (Interest Scores)
+
+Tracks user interaction frequency to determine personalized priority scores.
+
+Recommendation Algorithm
+
+Content-Based Filtering
+
+Scores and sorts events by user interest frequency before date.
+
+🚀 Getting Started
+
+Prerequisites
+
+.NET 8.0 SDK or newer.
+
+A C# IDE (e.g., Visual Studio or VS Code).
+
+Installation and Run
+
+Clone: git clone [Your-GitHub-Repository-URL]
+
+Navigate: cd MunicipalityApp
+
+Run: dotnet run (Application will typically run on https://localhost:7000/).
+
+💻 Technologies Used
+
+Backend: C#, ASP.NET Core 8.0 MVC
+
+Frontend: HTML5, CSS
+
+Data Management: In-Memory C# Collections
+
+Core Concepts: Dependency Injection, Repository Pattern, LINQ
+
+Reference list
+
+adegeo (2021). Generic Collections in .NET - .NET. [online] Microsoft.com. Available at: https://learn.microsoft.com/en-us/dotnet/standard/generics/collections.Datasciencecentral.com. 
+
+(2011). Data Science Central. [online] Available at: https://www.datasciencecentral.com.tdykstra (2024). 
+
+Dependency injection in ASP.NET Core.[online] Microsoft.com. Available at: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection.wibjorn (n.d.).
+
+Microsoft Learn: Build skills that open doors in your career. [online] learn.microsoft.com. Available at: https://learn.microsoft.com.
 
 
-This will launch the app on your local development server. By default, it will run at:
-
-https://localhost:5001
-http://localhost:5000
 
 
-Open the above link in your browser.
-
-How to Use
-
-Reporting Issues: Users can submit new issues. Each issue is automatically assigned a unique ID before being added to the queue.
-
-Viewing All Issues: You can retrieve and view the list of all reported issues in the order they were submitted.
-
-Queue Management: The system ensures thread-safe enqueueing and retrieval of issues.
