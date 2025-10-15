@@ -10,81 +10,142 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Report Issue - Municipal Services</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
-    <style>
-        :root {
-            --nsw-blue: #003882;
-            --nsw-light-blue: #005696;
-            --nsw-text-color: #333;
-        }
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
+    <style>
         body {
-            font-family: 'Inter', sans-serif;
-            color: var(--nsw-text-color);
+            font-family: 'Public Sans', sans-serif;
+            color: #1A1A1A; 
             background-image: url('../Images/SmallerTown.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
+            background-color: #F9F9F9; 
         }
 
-        .btn-primary {
-            background-color: var(--nsw-blue);
+        .nsw-header {
+            background-color: #0A1931; 
+            color: #fff;
+        }
+
+        .nsw-button-primary {
+            background-color: #00A79D; 
             color: white;
+            border-radius: 0.375rem;
+            padding: 0.75rem 1.75rem; 
+            font-weight: 700;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-            .btn-primary:hover {
-                background-color: var(--nsw-light-blue);
+            .nsw-button-primary:hover {
+                background-color: #00877F; 
+                transform: translateY(-1px);
             }
 
-        .btn-secondary {
-            background-color: #ccc;
-            color: #666;
+        .nsw-button-secondary {
+            background-color: #D3DCE6; 
+            color: #0A1931;
+            border-radius: 0.375rem;
+            padding: 0.75rem 1.75rem;
+            font-weight: 600;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+            .nsw-button-secondary:hover {
+                background-color: #C3CED7;
+            }
+
+
+        .section-heading {
+            color: #0A1931; 
+        }
+
+        .nsw-input-field {
+            border: 1px solid #C3CED7;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            color: #1A1A1A;
+            background-color: white;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+            .nsw-input-field:focus {
+                outline: none;
+                border-color: #00A79D; 
+                box-shadow: 0 0 0 2px rgba(0, 167, 157, 0.2);
+            }
+
+        .nsw-label {
+            font-weight: 600; 
+            color: #0A1931;
+        }
+
+        .backdrop-blur-custom {
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .nsw-footer {
+            background-color: #EFEFEF;
+            color: #444;
         }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
 
-    <header class="bg-[#003882] text-white p-4 shadow-md w-full">
-        <div class="container mx-auto max-w-lg flex items-center">
-            <h1 class="text-2xl font-bold">South African Municipal Services</h1>
+    <header class="nsw-header p-4 shadow-lg w-full">
+        <div class="container mx-auto max-w-lg flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <img src="/Images/SACoatOfArms.png" alt="Municipal Logo" class="h-10 w-auto">
+                <h1 class="text-2xl font-extrabold tracking-tight">Municipal Services Portal</h1>
+            </div>
         </div>
     </header>
 
-    <div class="flex-grow flex items-center justify-center p-4">
-        <div class="container max-w-lg w-full p-8 bg-white/75 rounded-xl shadow-lg backdrop-blur-sm">
-            <h2 class="text-3xl font-bold mb-6 text-center">Report an Issue</h2>
+    <div class="flex-grow flex items-center justify-center p-6">
+        <div class="container max-w-lg w-full p-8 bg-white/95 rounded-xl shadow-2xl backdrop-blur-custom border border-gray-200">
+            <h2 class="text-3xl font-extrabold mb-6 text-center section-heading border-b pb-3">Report a New Issue</h2>
 
             @if (TempData["Reference"] != null)
             {
-                <div class="mb-4 text-blue-800 bg-blue-200 p-3 rounded">
-                    ✅ Your issue has been logged successfully.<br />
+                <div class="mb-4 text-teal-800 bg-teal-100 border-l-4 border-teal-500 p-4 rounded-md">
+                    <i class="fas fa-check-circle mr-2"></i> Your issue has been logged successfully.<br />
                     Reference Number: <strong>@TempData["Reference"]</strong>
                 </div>
             }
 
             @if (TempData["Success"] != null)
             {
-                <div class="mb-4 text-green-800 bg-green-200 p-3 rounded">@TempData["Success"]</div>
+                <div class="mb-4 text-green-800 bg-green-100 border-l-4 border-green-500 p-4 rounded-md">
+                    <i class="fas fa-check-circle mr-2"></i> @TempData["Success"]
+                </div>
             }
+
             @if (TempData["Error"] != null)
             {
-                <div class="mb-4 text-red-800 bg-red-200 p-3 rounded">@TempData["Error"]</div>
+                <div class="mb-4 text-red-800 bg-red-100 border-l-4 border-red-500 p-4 rounded-md">
+                    <i class="fas fa-exclamation-triangle mr-2"></i> @TempData["Error"]
+                </div>
             }
 
-            @Html.ValidationSummary(true, "", new { @class = "text-red-600 mb-4" })
+            @Html.ValidationSummary(true, "", new { @class = "text-red-600 mb-4 bg-red-50 p-3 rounded border border-red-300" })
 
-            <form asp-action="Report" method="post" enctype="multipart/form-data" class="space-y-4">
+            <form asp-action="Report" method="post" enctype="multipart/form-data" class="space-y-6">
                 @Html.AntiForgeryToken()
 
                 <div>
-                    <label asp-for="Location" class="block font-semibold mb-1"></label>
-                    <input asp-for="Location" class="w-full p-2 border border-gray-300 rounded" />
-                    <span asp-validation-for="Location" class="text-red-600"></span>
+                    <label asp-for="Location" class="nsw-label block mb-1">Location of Issue (Address, Street Corner, etc.)</label>
+                    <input asp-for="Location" class="nsw-input-field w-full" placeholder="e.g., Corner of Main & Oak St" />
+                    <span asp-validation-for="Location" class="text-red-600 text-sm mt-1 block"></span>
                 </div>
 
                 <div>
-                    <label asp-for="Category" class="block font-semibold mb-1"></label>
-                    <select asp-for="Category" class="w-full p-2 border border-gray-300 rounded">
+                    <label asp-for="Category" class="nsw-label block mb-1">Issue Type</label>
+                    <select asp-for="Category" class="nsw-input-field w-full">
                         <option value="">-- Select Category --</option>
                         <option value="Sanitation">Sanitation</option>
                         <option value="Roads">Roads</option>
@@ -107,30 +168,39 @@
                         <option value="Building / Construction Issues">Building / Construction Issues</option>
                         <option value="Other">Other</option>
                     </select>
-                    <span asp-validation-for="Category" class="text-red-600"></span>
+                    <span asp-validation-for="Category" class="text-red-600 text-sm mt-1 block"></span>
                 </div>
 
                 <div>
-                    <label asp-for="Description" class="block font-semibold mb-1"></label>
-                    <textarea asp-for="Description" class="w-full p-2 border border-gray-300 rounded" rows="5"></textarea>
+                    <label asp-for="Description" class="nsw-label block mb-1">Detailed Description</label>
+                    <textarea asp-for="Description" class="nsw-input-field w-full" rows="5" placeholder="Please describe the issue in detail (e.g., depth of pothole, duration of outage)"></textarea>
+                    <span asp-validation-for="Description" class="text-red-600 text-sm mt-1 block"></span>
                 </div>
 
                 <div>
-                    <label class="block font-semibold mb-1">Attach File</label>
-                    <input type="file" name="file" class="w-full p-2 border border-gray-300 rounded" />
+                    <label class="nsw-label block mb-1">Attach Photo (Optional)</label>
+                    <input type="file" name="file" class="w-full p-2 border border-gray-300 rounded bg-gray-50 hover:bg-white transition" />
+                    <p class="text-xs text-gray-500 mt-1">Maximum file size 5MB. Photo evidence helps us resolve issues faster.</p>
                 </div>
 
-                <div class="flex justify-between mt-4">
-                    <button type="submit" class="btn-primary px-6 py-2 rounded font-semibold">Submit</button>
-                    <a asp-controller="Home" asp-action="Index" class="btn-secondary px-6 py-2 rounded font-semibold">Back</a>
+                <div class="flex justify-between pt-4">
+                    <button type="submit" class="nsw-button-primary">
+                        <i class="fas fa-paper-plane mr-2"></i> Submit Report
+                    </button>
+                    <a asp-controller="Home" asp-action="Index" class="nsw-button-secondary font-semibold">
+                        <i class="fas fa-home mr-2"></i> Back to Home
+                    </a>
                 </div>
             </form>
         </div>
     </div>
 
+    <footer class="nsw-footer py-4 text-center text-sm text-gray-600 border-t border-gray-200 mt-auto">
+        &copy; @DateTime.Now.Year Municipality Portal. All rights reserved.
+    </footer>
+
 </body>
 </html>
-
 
 
 

@@ -10,38 +10,119 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reported Issues - Municipal Services</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
-    <style>
-        :root {
-            --nsw-blue: #003882;
-            --nsw-light-blue: #005696;
-        }
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
+    <style>
+        
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Public Sans', sans-serif;
+            color: #1A1A1A; 
             background-image: url('../Images/SmallerTown.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
+            background-color: #F9F9F9;
         }
 
-        .btn-primary {
-            background-color: var(--nsw-blue);
+        .nsw-header {
+            background-color: #0A1931;
+            color: #fff;
+        }
+
+        .nsw-button-primary {
+            background-color: #00A79D;
             color: white;
+            border-radius: 0.375rem;
+            padding: 0.6rem 1.25rem;
+            font-weight: 700;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-            .btn-primary:hover {
-                background-color: var(--nsw-light-blue);
+            .nsw-button-primary:hover {
+                background-color: #00877F;
+                transform: translateY(-1px);
             }
 
-        .btn-warning {
-            background-color: #f59e0b;
-            color: white;
+        .nsw-button-secondary {
+            background-color: #D3DCE6;
+            color: #0A1931;
+            border-radius: 0.375rem;
+            padding: 0.6rem 1.25rem;
+            font-weight: 600;
+            transition: background-color 0.2s, color 0.2s;
         }
 
-            .btn-warning:hover {
-                background-color: #d97706;
+            .nsw-button-secondary:hover {
+                background-color: #C3CED7;
             }
+
+        .issue-card {
+            background-color: #fff;
+            border-left: 5px solid #0A1931;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+            .issue-card:hover {
+                border-left-color: #00A79D;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                transform: translateY(-2px);
+            }
+
+        .nsw-footer {
+            background-color: #EFEFEF;
+            color: #444;
+        }
+
+        .section-heading {
+            color: #0A1931;
+        }
+
+        .modal-content {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .backdrop-blur-custom {
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .status-open {
+            background-color: #fef2f2;
+            color: #b91c1c;
+            border-color: #f87171;
+        }
+
+        .status-inprogress {
+            background-color: #fffbeb; 
+            color: #92400e; 
+            border-color: #fbbf24; 
+        }
+
+        .status-resolved {
+            background-color: #f0fdfa; 
+            color: #0f766e; 
+            border-color: #2dd4bf; 
+        }
+
+        .status-inprogress {
+            background-color: #fffbeb; 
+            color: #92400e; 
+            border-color: #fbbf24; 
+        }
+
+        .status-resolved {
+            background-color: #f0fdfa; 
+            color: #0f766e;
+            border-color: #2dd4bf;
+        }
+
     </style>
     <script>
         function openModal(id) {
@@ -54,75 +135,131 @@
 </head>
 <body class="flex flex-col min-h-screen">
 
-    <header class="bg-[#003882] text-white p-4 shadow-md w-full">
-        <div class="container mx-auto max-w-lg flex items-center">
-            <h1 class="text-2xl font-bold">South African Municipal Services</h1>
+    <header class="nsw-header p-4 shadow-lg w-full">
+        <div class="container mx-auto max-w-6xl flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <img src="/Images/SACoatOfArms.png" alt="Municipal Logo" class="h-10 w-auto">
+                <h1 class="text-2xl font-extrabold tracking-tight">Municipal Services Portal</h1>
+            </div>
         </div>
     </header>
 
-    <div class="flex-grow flex justify-center p-4">
-        <div class="container max-w-4xl w-full p-6 bg-white/75 rounded-xl shadow-lg backdrop-blur-sm">
-            <h2 class="text-3xl font-bold mb-6 text-center">Reported Issues</h2>
+    <div class="flex-grow flex justify-center p-6">
+        <div class="container max-w-5xl w-full p-8 bg-white/95 rounded-xl shadow-2xl backdrop-blur-custom">
+
+            <div class="flex justify-between items-center mb-6 border-b pb-4">
+                <h2 class="text-4xl font-extrabold section-heading">Active Service Issues</h2>
+                <a href="/Issues/Report" class="nsw-button-primary font-semibold text-base py-3 px-6 whitespace-nowrap">
+                    <i class="fas fa-plus-circle mr-2"></i> Report New Issue
+                </a>
+            </div>
 
             @if (TempData["Success"] != null)
             {
-                <div class="mb-4 text-green-800 bg-green-200 p-3 rounded">@TempData["Success"]</div>
+                <div class="mb-4 text-green-800 bg-green-100 border-l-4 border-green-500 p-4 rounded-md">
+                    <i class="fas fa-check-circle mr-2"></i> @TempData["Success"]
+                </div>
             }
             @if (TempData["Error"] != null)
             {
-                <div class="mb-4 text-red-800 bg-red-200 p-3 rounded">@TempData["Error"]</div>
+                <div class="mb-4 text-red-800 bg-red-100 border-l-4 border-red-500 p-4 rounded-md">
+                    <i class="fas fa-exclamation-triangle mr-2"></i> @TempData["Error"]
+                </div>
             }
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                @foreach (var issue in Model)
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                @if (Model == null || !Model.Any())
                 {
-                    <div class="bg-gray-100 p-4 rounded shadow cursor-pointer hover:bg-gray-200"
-                         onclick="openModal('@issue.Id')">
-                        <h3 class="font-semibold">@issue.Category - @issue.Location</h3>
-                        <p class="text-sm text-gray-600">@issue.SubmittedAt.ToString("dd MMM yyyy HH:mm")</p>
-                        <p class="text-gray-700 truncate">@issue.Description</p>
-                        @if (!string.IsNullOrEmpty(issue.FilePath))
-                        {
-                            <img src="@issue.FilePath" alt="Attachment" class="mt-2 h-24 w-full object-cover rounded">
-                        }
-                    </div>
+                    <p class="text-gray-600 text-center col-span-full bg-gray-50 p-8 rounded-lg border border-gray-200">
+                        No service issues have been publicly reported yet.
+                    </p>
+                }
+                else
+                {
+                    @foreach (var issue in Model)
+                    {
+                        <div class="issue-card p-5" onclick="openModal('@issue.Id')">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold section-heading truncate mr-4">@issue.Category - @issue.Location</h3>
 
-                    <div id="modal-@issue.Id" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-                        <div class="bg-white rounded-xl w-11/12 md:w-2/3 lg:w-1/2 p-6 relative overflow-y-auto max-h-[90vh]">
-                            <button class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 font-bold"
-                                    onclick="closeModal('@issue.Id')">
-                                &times;
-                            </button>
+                                @{
+                                    string statusClass = issue.Status?.ToLower() switch
+                                    {
+                                        "open" => "status-open",
+                                        "in progress" => "status-inprogress",
+                                        "resolved" => "status-resolved",
+                                        _ => "bg-gray-200 text-gray-800 border-gray-400"
+                                    };
+                                }
+                                <span class="text-xs font-semibold px-3 py-1 rounded-full border @statusClass uppercase flex-shrink-0">
+                                    @issue.Status
+                                </span>
+                            </div>
 
-                            <h3 class="text-2xl font-bold mb-4">@issue.Category - @issue.Location</h3>
-
-                            <p><strong>Reference Number:</strong> @issue.ReferenceNumber</p>
-                            <p><strong>Status:</strong> @issue.Status</p>
-                            <p><strong>Submitted At:</strong> @issue.SubmittedAt.ToString("dd MMM yyyy HH:mm")</p>
-                            <p class="mt-2"><strong>Description:</strong> @issue.Description</p>
-
-                            @if (!string.IsNullOrEmpty(issue.Response))
-                            {
-                                <p class="mt-2 text-green-700"><strong>Municipal Response:</strong> @issue.Response</p>
-                            }
+                            <p class="text-sm text-gray-600 mb-3">Ref: @issue.ReferenceNumber | Submitted: @issue.SubmittedAt.ToString("dd MMM yyyy HH:mm")</p>
+                            <p class="text-gray-700 line-clamp-2">@issue.Description</p>
 
                             @if (!string.IsNullOrEmpty(issue.FilePath))
                             {
-                                <div class="mt-4">
-                                    <strong>Attachment:</strong>
-                                    <img src="@issue.FilePath" alt="Attachment" class="w-full object-cover rounded mt-2">
+                                <div class="mt-3">
+                                    <i class="fas fa-image text-teal-600 mr-1"></i>
+                                    <span class="text-xs text-gray-500">View Attachment</span>
                                 </div>
                             }
                         </div>
-                    </div>
+
+                        <div id="modal-@issue.Id" class="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center hidden z-50">
+                            <div class="bg-white rounded-xl modal-content w-11/12 md:w-2/3 lg:w-1/2 p-8 relative overflow-y-auto max-h-[90vh]">
+
+                                <button class="absolute top-4 right-4 text-gray-500 hover:text-red-600 font-bold text-2xl"
+                                        onclick="closeModal('@issue.Id')">
+                                    <i class="fas fa-times"></i>
+                                </button>
+
+                                <h3 class="text-3xl font-bold mb-4 section-heading">Issue Details: @issue.Category</h3>
+
+                                <div class="space-y-3 text-lg">
+                                    <p><strong>Location:</strong> <span class="font-normal text-gray-700">@issue.Location</span></p>
+                                    <p><strong>Reference Number:</strong> <span class="font-normal text-gray-700">@issue.ReferenceNumber</span></p>
+                                    <p><strong>Status:</strong> <span class="font-bold @(issue.Status?.ToLower() == "resolved" ? "text-teal-600" : "text-red-600")">@issue.Status</span></p>
+                                    <p><strong>Submitted:</strong> <span class="font-normal text-gray-700">@issue.SubmittedAt.ToString("dd MMMM yyyy HH:mm")</span></p>
+
+                                    <div class="mt-4 pt-4 border-t border-gray-200">
+                                        <p class="font-bold">Full Description:</p>
+                                        <p class="text-gray-700 whitespace-pre-wrap">@issue.Description</p>
+                                    </div>
+
+                                    @if (!string.IsNullOrEmpty(issue.Response))
+                                    {
+                                        <div class="bg-teal-50 border-l-4 border-teal-500 p-4 rounded mt-4">
+                                            <p class="font-bold text-teal-700">Municipal Response:</p>
+                                            <p class="text-teal-800">@issue.Response</p>
+                                        </div>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(issue.FilePath))
+                                    {
+                                        <div class="mt-4 pt-4 border-t border-gray-200">
+                                            <p class="font-bold mb-2">Attached Image:</p>
+                                            <img src="@issue.FilePath" alt="Attached image for issue @issue.ReferenceNumber" class="w-full max-h-96 object-contain rounded-lg border border-gray-300">
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
                 }
             </div>
 
-            <div class="mt-6 text-center">
-                <a href="/Home/Index" class="btn-primary px-6 py-2 rounded font-semibold">Back to Main Menu</a>
+            <div class="mt-8 text-center">
+                <a href="/Home/Index" class="nsw-button-secondary !py-3 !px-8 text-lg font-bold">← Back to Main Menu</a>
             </div>
         </div>
     </div>
+
+    <footer class="nsw-footer py-4 text-center text-sm text-gray-600 border-t border-gray-200 mt-auto">
+        &copy; @DateTime.Now.Year Municipality Portal. All rights reserved.
+    </footer>
 
 </body>
 </html>

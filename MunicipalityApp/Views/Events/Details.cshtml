@@ -1,0 +1,174 @@
+﻿@model MunicipalityApp.Models.Event
+@{
+    ViewData["Title"] = "Event Details";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - @Model.Title</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Public Sans', sans-serif;
+            color: #1A1A1A;
+            background-color: #F9F9F9;
+        }
+
+        .section-heading {
+            color: #0A1931;
+        }
+
+        .nsw-button-secondary {
+            background-color: #D3DCE6; 
+            color: #0A1931;
+            border-radius: 0.375rem;
+            padding: 0.75rem 1.75rem;
+            font-weight: 600;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+            .nsw-button-secondary:hover {
+                background-color: #C3CED7;
+            }
+
+        .nsw-card-header {
+            border-bottom: 4px solid #00A79D; 
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .nsw-detail-label {
+            font-weight: 700;
+            color: #0A1931; 
+        }
+
+        .nsw-category-tag {
+            background-color: #00A79D;
+            color: white;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <div class="flex-grow flex items-center justify-center p-6">
+        <div class="max-w-4xl mx-auto w-full bg-white p-8 rounded-xl shadow-2xl border border-gray-200">
+
+            <header class="nsw-card-header">
+                <h1 class="text-4xl font-extrabold section-heading mb-2">@Model.Title</h1>
+                <span class="nsw-category-tag px-3 py-1 text-sm rounded-full uppercase tracking-wider">
+                    <i class="fas fa-tag mr-1"></i> @Model.Category
+                </span>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
+                <div class="md:col-span-1 border-l-4 border-gray-300 pl-4 py-2">
+                    <p class="text-lg nsw-detail-label mb-1">Date</p>
+                    <p class="text-2xl font-bold text-teal-600">@Model.Date.ToString("dd MMMM yyyy")</p>
+                    @* Assuming time or duration would be here if available *@
+                    <p class="text-sm text-gray-500 mt-1">Check local listings for specific times.</p>
+                </div>
+
+                <div class="md:col-span-2 border-l-4 border-gray-300 pl-4 py-2">
+                    <p class="text-lg nsw-detail-label mb-1">Location</p>
+                    <p class="text-xl text-gray-700 font-medium">Municipal Auditorium (or address placeholder)</p>
+                    <p class="text-sm text-gray-500 mt-1">Public access: Yes | Parking: Limited</p>
+                </div>
+
+            </div>
+
+            <h2 class="text-2xl font-extrabold section-heading mt-6 mb-3 border-b pb-2">Event Description</h2>
+
+            <div class="text-lg text-gray-700 leading-relaxed whitespace-pre-wrap">
+                @Model.Description
+            </div>
+
+            @* Add a placeholder for contact/registration details *@
+            <div class="mt-8 pt-6 border-t border-gray-200">
+                <p class="text-lg nsw-detail-label mb-2">Registration / Contact</p>
+                <a href="#" class="text-teal-600 hover:text-teal-800 font-semibold text-lg">
+                    <i class="fas fa-external-link-alt mr-2"></i> Visit Official Event Page
+                </a>
+                <p class="text-sm text-gray-600 mt-2">For more information, contact the Community Services Department.</p>
+            </div>
+
+            <div class="mt-10 text-center">
+                <a href="@Url.Action("Index", "Events")" class="nsw-button-secondary text-lg">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to All Events
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-EFEFEF py-4 text-center text-sm text-gray-600 border-t border-gray-200 mt-auto">
+        &copy; @DateTime.Now.Year Municipality Portal. All rights reserved.
+    </footer>
+
+</body>
+</html>using MunicipalityApp.Models;
+using System.Collections.Generic;
+
+namespace MunicipalityApp.Services
+{
+    public class EventNode
+    {
+        public Event Event { get; set; }
+        public double Score { get; set; }
+        public EventNode Next { get; set; }
+    }
+
+    public class EventPriorityQueue
+    {
+        private EventNode head;
+
+        public void Push(Event ev, double score)
+        {
+            var node = new EventNode { Event = ev, Score = score };
+            if (head == null || head.Score < score)
+            {
+                node.Next = head;
+                head = node;
+            }
+            else
+            {
+                var current = head;
+                while (current.Next != null && current.Next.Score >= score)
+                    current = current.Next;
+
+                node.Next = current.Next;
+                current.Next = node;
+            }
+        }
+
+        public Event Pop()
+        {
+            if (head == null) return null;
+            var ev = head.Event;
+            head = head.Next;
+            return ev;
+        }
+
+        public bool IsEmpty() => head == null;
+
+        public IEnumerable<Event> ToList(int max = 10)
+        {
+            var list = new List<Event>();
+            var current = head;
+            int count = 0;
+            while (current != null && count < max)
+            {
+                list.Add(current.Event);
+                current = current.Next;
+                count++;
+            }
+            return list;
+        }
+    }
+}
+

@@ -1,0 +1,243 @@
+﻿@model IEnumerable<MunicipalityApp.Models.Event>
+@{
+    ViewData["Title"] = "Local Events";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - Municipality Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    @* Include Font Awesome for the + icon on the button *@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+    <style>
+        body {
+            font-family: 'Public Sans', sans-serif;
+            background-color: #F9F9F9;
+            color: #1A1A1A;
+        }
+
+        .nsw-header {
+            background-color: #0A1931;
+            color: #fff;
+        }
+
+        .nsw-button-primary {
+            background-color: #00A79D;
+            color: white;
+            border-radius: 0.375rem;
+            padding: 0.6rem 1.25rem;
+            font-weight: 700;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+            .nsw-button-primary:hover {
+                background-color: #00877F;
+                transform: translateY(-1px);
+            }
+
+        .nsw-button-secondary {
+            background-color: #D3DCE6;
+            color: #0A1931;
+            border-radius: 0.375rem;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+            .nsw-button-secondary:hover {
+                background-color: #C3CED7;
+            }
+
+        .nsw-card {
+            background-color: #fff;
+            border: 1px solid #EAEAEA;
+            border-left: 5px solid #00A79D;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+        }
+
+            .nsw-card:hover {
+                border-color: #0A1931;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                transform: translateY(-2px);
+            }
+
+        .nsw-footer {
+            background-color: #EFEFEF;
+            color: #444;
+        }
+
+        .nsw-link {
+            color: #fff;
+            transition: color 0.2s;
+        }
+
+            .nsw-link:hover {
+                color: #00A79D;
+                text-decoration: none;
+            }
+
+        .nsw-text-link {
+            color: #0A1931;
+            font-weight: 600;
+        }
+
+            .nsw-text-link:hover {
+                color: #00A79D;
+                text-decoration: underline;
+            }
+
+        .section-heading {
+            color: #0A1931;
+        }
+
+        .nsw-input-field {
+            border: 1px solid #C3CED7;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            color: #1A1A1A;
+            background-color: white;
+            transition: border-color 0.2s;
+        }
+
+            .nsw-input-field:focus {
+                outline: none;
+                border-color: #00A79D;
+                box-shadow: 0 0 0 2px rgba(0, 167, 157, 0.2);
+            }
+
+    </style>
+</head>
+
+<body class="flex flex-col min-h-screen">
+    <header class="nsw-header shadow-lg w-full">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <img src="/Images/SACoatOfArms.png" alt="Municipal Logo" class="h-10 w-auto">
+                <h1 class="text-2xl font-extrabold tracking-tight">Municipal Services Portal</h1>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto w-full p-6">
+        <div class="bg-white shadow-xl rounded-lg p-8 border border-gray-200">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 border-b pb-4">
+                <h2 class="text-4xl font-extrabold section-heading mb-3 sm:mb-0">Community Events & Announcements</h2>
+                <a href="/Events/Add" class="nsw-button-primary font-semibold text-base py-3 px-6 whitespace-nowrap">
+                    <i class="fas fa-plus mr-2"></i> + Submit New Event
+                </a>
+            </div>
+
+            <form method="get" class="flex flex-wrap gap-4 mb-8 items-end">
+                <div class="flex flex-col">
+                    <label for="category" class="text-sm font-medium text-gray-600 mb-1">Category</label>
+                    <select id="category" name="category" class="nsw-input-field">
+                        <option value="">All Categories</option>
+                        @foreach (var cat in (IEnumerable<string>?)ViewBag.Categories ?? Enumerable.Empty<string>())
+                        {
+                            if (cat == (string?)ViewBag.SelectedCategory)
+                            {
+                                <option value="@cat" selected>@cat</option>
+                            }
+                            else
+                            {
+                                <option value="@cat">@cat</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="date" class="text-sm font-medium text-gray-600 mb-1">Starting After</label>
+                    <input type="date" id="date" name="date"
+                           value="@(ViewBag.SelectedDate != null ? ((DateTime)ViewBag.SelectedDate).ToString("yyyy-MM-dd") : "")"
+                           class="nsw-input-field" />
+                </div>
+
+                <div class="flex flex-col flex-grow">
+                    <label for="search" class="text-sm font-medium text-gray-600 mb-1">Search Keywords</label>
+                    <input type="text" id="search" name="search" placeholder="Event name, location, or description..."
+                           value="@ViewBag.Search"
+                           class="nsw-input-field" />
+                </div>
+
+                <button type="submit" class="nsw-button-secondary py-2.5 px-6 font-bold">Filter</button>
+            </form>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @if (Model == null || !Model.Any())
+                {
+                    <p class="text-gray-600 text-center col-span-full bg-gray-50 p-8 rounded-lg border border-gray-200">
+                        There are no events matching your criteria. Try adjusting your filters.
+                    </p>
+                }
+                else
+                {
+                    @foreach (var e in Model)
+                    {
+                        <a href="@Url.Action("Details", "Events", new { id = e.Id })" class="block">
+                            <div class="nsw-card p-5 h-full flex flex-col justify-between">
+                                <div>
+                                    <h3 class="text-xl font-bold section-heading mb-1">@e.Title</h3>
+                                    <p class="text-sm text-gray-700 font-medium mt-2">
+                                        <span class="font-bold text-gray-800">Date:</span> @e.Date.ToString("dd MMMM yyyy")
+                                    </p>
+                                    <p class="text-sm text-gray-700">
+                                        <span class="font-bold text-gray-800">Category:</span> <span class="bg-teal-50 text-teal-800 px-2 py-0.5 rounded text-xs font-bold uppercase">@e.Category</span>
+                                    </p>
+                                    <p class="mt-3 text-gray-600 line-clamp-3">@e.Description</p>
+                                </div>
+                                <div class="mt-4">
+                                    <span class="text-sm nsw-text-link">View Details &rarr;</span>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                }
+            </div>
+
+            @if (ViewBag.RecentlyViewed != null && ((IEnumerable<MunicipalityApp.Models.Event>)ViewBag.RecentlyViewed).Any())
+            {
+                <h4 class="text-2xl font-bold mt-10 mb-4 section-heading border-b border-gray-200 pb-2">Recently Viewed Events</h4>
+                <div class="flex gap-4 overflow-x-auto pb-2">
+                    @foreach (var rv in (IEnumerable<MunicipalityApp.Models.Event>)ViewBag.RecentlyViewed)
+                    {
+                        <a href="@Url.Action("Details", "Events", new { id = rv.Id })" class="min-w-[200px] nsw-card p-4 !border-l-2 !border-teal-400 hover:!border-0A1931">
+                            <p class="text-base font-semibold section-heading truncate">@rv.Title</p>
+                            <p class="text-xs text-gray-600 mt-1">@rv.Date.ToString("dd MMM yyyy")</p>
+                        </a>
+                    }
+                </div>
+            }
+
+            <div class="mt-10 text-center">
+                <a href="/Home/Index" class="nsw-button-secondary !py-3 !px-8 text-lg font-bold">← Back to Main Menu</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="nsw-footer mt-12 py-6 text-center text-sm border-t border-gray-200">
+        &copy; @DateTime.Now.Year Municipality Portal. All rights reserved. | <a href="#" class="nsw-text-link !text-gray-600 hover:!text-00A79D">Terms of Service</a>
+    </footer>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
